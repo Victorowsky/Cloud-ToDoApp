@@ -19,7 +19,6 @@ const Tasks = ({ tasks, handleDelete }) => {
           {index + 1}.{task.userData.text}
         </p>
         <DeleteForeverIcon
-          onClick={handleDelete}
           data-index={task._id}
           style={{ position: "relative", right: "2%" }}
         />

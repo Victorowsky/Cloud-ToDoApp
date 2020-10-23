@@ -10,6 +10,7 @@ function App() {
   if (!localStorage.getItem("userID")) {
     localStorage.setItem("userID", Math.floor(Math.random() * 1000000000));
   }
+  const [reloadData, setReloadData] = useState(1);
   const [currentTask, setCurrentTask] = useState("");
   const [importantChecked, setImportantChecked] = useState(false);
 
@@ -19,7 +20,7 @@ function App() {
     fetch(`https://just-cheddar-yumberry.glitch.me/take/tasks/${userID}`)
       .then((res) => res.json())
       .then((data) => setTasks(data));
-  }, []);
+  }, [reloadData]);
 
   const handleAddTask = (e) => {
     e.preventDefault();
@@ -28,15 +29,12 @@ function App() {
         `https://just-cheddar-yumberry.glitch.me/add/tasks/${currentTask}/${importantChecked}/${userID}`,
         {
           method: "POST",
+          mode: "no-cors",
         }
-      );
-      setImportantChecked(false);
-      setCurrentTask("");
+      ).then(setReloadData(reloadData + 1)); //RELOAD DATA
+      setImportantChecked(false); // CLEAR IMPORTANT BUTTON
+      setCurrentTask(""); // CLEAR INPUT
     }
-    // RELOAD DATA
-    fetch(`https://just-cheddar-yumberry.glitch.me/take/tasks/${userID}`)
-      .then((res) => res.json())
-      .then((data) => setTasks(data));
   };
 
   const handleDeleteTask = (e) => {
@@ -47,12 +45,8 @@ function App() {
         {
           method: "POST",
         }
-      );
+      ).then(setReloadData(reloadData + 1)); //RELOAD DATA
     }
-    // RELOAD DATA
-    fetch(`https://just-cheddar-yumberry.glitch.me/take/tasks/${userID}`)
-      .then((res) => res.json())
-      .then((data) => setTasks(data));
   };
 
   return (

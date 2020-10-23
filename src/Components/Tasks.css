@@ -23,6 +23,7 @@ li > p {
   flex-wrap: wrap;
   outline: none;
   word-break: break-all;
+  color: white;
 }
 
 .taskList {
