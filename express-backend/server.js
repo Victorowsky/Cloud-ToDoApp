@@ -2,12 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Task = require("./model/task");
 const app = express();
-const port = 4000;
+const cors = require("cors");
+var serverPort = 8080;
+var port = process.env.PORT || serverPort;
 
 const dataURI = `mongodb+srv://admin:eOccNpOCD2nHy3F2@cluster0.ktmcd.mongodb.net/express?retryWrites=true&w=majority`;
 
 app.use(express.json());
-
+app.use(cors());
 mongoose.connect(
   dataURI,
   {

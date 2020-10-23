@@ -1,0 +1,40 @@
+ul {
+  list-style-type: none;
+}
+li {
+  display: flex;
+  margin-top: 25px;
+  flex: 1;
+  padding: 15px 30px;
+  border: 2px solid white;
+  font-weight: bold;
+  transition: 0.3s;
+  box-shadow: 2px 2px 20px;
+  align-content: center;
+  max-width: 300px;
+}
+li:hover {
+  transform: scale(1.1);
+}
+
+li > p {
+  max-width: 200px;
+  flex: 1;
+  flex-wrap: wrap;
+  outline: none;
+  word-break: break-all;
+}
+
+.taskList {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  text-align: center;
+}
+.taskList h2 {
+  margin-top: 5px;
+  color: white;
+}
