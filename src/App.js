@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Tasks from "./Components/Tasks";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
+import RefreshIcon from "@material-ui/icons/Refresh";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -20,7 +21,7 @@ function App() {
     fetch(`https://just-cheddar-yumberry.glitch.me/take/tasks/${userID}`)
       .then((res) => res.json())
       .then((data) => setTasks(data));
-  }, [reloadData]);
+  }, [reloadData, userID]);
 
   const handleAddTask = (e) => {
     e.preventDefault();
@@ -50,50 +51,56 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <div className="addTask">
-        <form onSubmit={handleAddTask} formMethod="POST">
-          <h1> Add task</h1>
-          <TextField
-            id="standard-basic"
-            label="Insert your task"
-            style={{ color: "white !important" }}
-            value={currentTask}
-            onChange={(e) => setCurrentTask(e.target.value)}
-          />
-          <div className="checkbox">
-            <Checkbox
-              checked={importantChecked}
-              style={{
-                width: "fit-content",
-              }}
-              onChange={() => {
-                setImportantChecked((prev) => !prev);
-              }}
-              inputProps={{ "aria-label": "primary checkbox" }}
+    <>
+      <RefreshIcon
+        onClick={() => setReloadData(reloadData + 1)}
+        style={{ position: "fixed", top: "1%", left: "97%", cursor: "pointer" }}
+      />
+      <div className="app">
+        <div className="addTask">
+          <form onSubmit={handleAddTask} formMethod="POST">
+            <h1> Add task</h1>
+            <TextField
+              id="standard-basic"
+              label="Insert your task"
+              style={{ color: "white !important" }}
+              value={currentTask}
+              onChange={(e) => setCurrentTask(e.target.value)}
             />
-            <p>Important</p>
-          </div>
+            <div className="checkbox">
+              <Checkbox
+                checked={importantChecked}
+                style={{
+                  width: "fit-content",
+                }}
+                onChange={() => {
+                  setImportantChecked((prev) => !prev);
+                }}
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+              <p>Important</p>
+            </div>
 
-          <Button
-            variant="contained"
-            type="submit"
-            style={{
-              marginTop: "5px",
-              width: "fit-content",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            color="primary"
-            onSubmit={handleAddTask}
-          >
-            Add
-          </Button>
-        </form>
+            <Button
+              variant="contained"
+              type="submit"
+              style={{
+                marginTop: "5px",
+                width: "fit-content",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+              color="primary"
+              onSubmit={handleAddTask}
+            >
+              Add
+            </Button>
+          </form>
+        </div>
+
+        <Tasks tasks={tasks} handleDelete={handleDeleteTask} />
       </div>
-
-      <Tasks tasks={tasks} handleDelete={handleDeleteTask} />
-    </div>
+    </>
   );
 }
 
