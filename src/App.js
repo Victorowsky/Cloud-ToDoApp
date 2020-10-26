@@ -5,8 +5,10 @@ import Tasks from "./Components/Tasks";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import anime from "animejs/lib/anime.es.js";
 
 function App() {
+  const ApiURL = "https://just-cheddar-yumberry.glitch.me";
   const [tasks, setTasks] = useState([]);
   if (!localStorage.getItem("userID")) {
     localStorage.setItem("userID", Math.floor(Math.random() * 1000000000));
@@ -18,7 +20,7 @@ function App() {
   const userID = localStorage.getItem("userID");
 
   useEffect(() => {
-    fetch(`https://just-cheddar-yumberry.glitch.me/take/tasks/${userID}`)
+    fetch(`${ApiURL}/take/tasks/${userID}`)
       .then((res) => res.json())
       .then((data) => setTasks(data));
   }, [reloadData, userID]);
@@ -27,7 +29,7 @@ function App() {
     e.preventDefault();
     if (currentTask) {
       fetch(
-        `https://just-cheddar-yumberry.glitch.me/add/tasks/${currentTask}/${importantChecked}/${userID}`,
+        `${ApiURL}/add/tasks/${currentTask}/${importantChecked}/${userID}`,
         {
           method: "POST",
           mode: "no-cors",
@@ -41,20 +43,32 @@ function App() {
   const handleDeleteTask = (e) => {
     const answer = window.confirm(`Are you sure about delete this task?`);
     if (answer) {
-      fetch(
-        `https://just-cheddar-yumberry.glitch.me/delete/tasks/${e.target.dataset.index}`,
-        {
-          method: "POST",
-        }
-      ).then(setReloadData(reloadData + 1)); //RELOAD DATA
+      fetch(`${ApiURL}/delete/tasks/${e.target.dataset.index}`, {
+        method: "POST",
+      }).then(setReloadData(reloadData + 1)); //RELOAD DATA
     }
+  };
+
+  const handleAnimateRefreshBtn = () => {
+    anime({
+      targets: ".refreshIcon",
+      rotate: {
+        value: [0, 360],
+      },
+
+      duration: 2000,
+    });
   };
 
   return (
     <>
       <RefreshIcon
-        onClick={() => setReloadData(reloadData + 1)}
-        style={{ position: "fixed", top: "1%", left: "97%", cursor: "pointer" }}
+        className="refreshIcon"
+        onClick={(e) => {
+          setReloadData(reloadData + 1);
+          handleAnimateRefreshBtn();
+        }}
+        // style={{ position: "fixed", top: "1%", left: "97%", cursor: "pointer" }}
       />
       <div className="app">
         <div className="addTask">

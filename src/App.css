@@ -5,6 +5,7 @@
 }
 body {
   background-color: #222831;
+  font-family: "Roboto", sans-serif;
 }
 .app {
   display: flex;
@@ -37,4 +38,10 @@ form {
 }
 .MuiInputBase-input {
   color: white !important;
+}
+.refreshIcon {
+  position: fixed;
+  top: 1%;
+  left: calc(100% - 2%);
+  cursor: pointer;
 }
