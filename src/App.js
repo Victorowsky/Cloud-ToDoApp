@@ -10,23 +10,31 @@ import anime from "animejs/lib/anime.es.js";
 function App() {
   const ApiURL = "https://just-cheddar-yumberry.glitch.me";
   const [tasks, setTasks] = useState([]);
-  if (!localStorage.getItem("userID")) {
-    localStorage.setItem("userID", Math.floor(Math.random() * 1000000000));
-  }
+
   const [reloadData, setReloadData] = useState(1);
   const [currentTask, setCurrentTask] = useState("");
   const [importantChecked, setImportantChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
+  if (!localStorage.getItem("userID")) {
+    localStorage.setItem("userID", Math.floor(Math.random() * 1000000000));
+  }
   const userID = localStorage.getItem("userID");
 
   useEffect(() => {
     fetch(`${ApiURL}/take/tasks/${userID}`)
       .then((res) => res.json())
-      .then((data) => setTasks(data));
+      .then((data) => {
+        setTasks(data);
+        if (data.length === 0) {
+          setIsLoading(false);
+          console.log(isLoading);
+        }
+      });
   }, [reloadData, userID]);
 
   const handleAddTask = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (currentTask) {
       fetch(
         `${ApiURL}/add/tasks/${currentTask}/${importantChecked}/${userID}`,
@@ -34,7 +42,7 @@ function App() {
           method: "POST",
           mode: "no-cors",
         }
-      ).then(setReloadData(reloadData + 1)); //RELOAD DATA
+      ).then(() => setReloadData(reloadData + 1)); //RELOAD DATA
       setImportantChecked(false); // CLEAR IMPORTANT BUTTON
       setCurrentTask(""); // CLEAR INPUT
     }
@@ -45,7 +53,7 @@ function App() {
     if (answer) {
       fetch(`${ApiURL}/delete/tasks/${e.target.dataset.index}`, {
         method: "POST",
-      }).then(setReloadData(reloadData + 1)); //RELOAD DATA
+      }).then(() => setReloadData(reloadData + 1)); //RELOAD DATA
     }
   };
 
@@ -112,7 +120,12 @@ function App() {
           </form>
         </div>
 
-        <Tasks tasks={tasks} handleDelete={handleDeleteTask} />
+        <Tasks
+          tasks={tasks}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          handleDelete={handleDeleteTask}
+        />
       </div>
     </>
   );

@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "./Tasks.css";
-const Tasks = ({ tasks, handleDelete }) => {
-  const [isLoading, setIsLoading] = useState(true);
+const Tasks = ({ tasks, handleDelete, isLoading, setIsLoading }) => {
   const [arrayCreated, setArrayCreated] = useState(false);
   const createTask = tasks.map((task, index) => {
     if (isLoading) setIsLoading(false);
     if (!arrayCreated) setArrayCreated(true);
     const style = task.userData.important
-      ? {
+      ? { 
           border: "2px solid red",
         }
       : {};
