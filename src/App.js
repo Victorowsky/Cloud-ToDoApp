@@ -8,7 +8,7 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import anime from "animejs/lib/anime.es.js";
 
 function App() {
-  const ApiURL = "https://just-cheddar-yumberry.glitch.me";
+  const ApiURL = "https://testing-project9034.herokuapp.com";
   const [tasks, setTasks] = useState([]);
 
   const [reloadData, setReloadData] = useState(1);
@@ -31,7 +31,7 @@ function App() {
           console.log(isLoading);
         }
       });
-  }, [reloadData, userID]);
+  }, [isLoading, reloadData, userID]);
 
   const handleAddTask = (e) => {
     if (e) e.preventDefault();
@@ -85,6 +85,7 @@ function App() {
             <TextField
               id="standard-basic"
               label="Insert your task"
+              autoComplete='off'
               style={{ color: "white !important" }}
               value={currentTask}
               onChange={(e) => setCurrentTask(e.target.value)}
