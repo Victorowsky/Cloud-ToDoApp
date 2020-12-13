@@ -38,6 +38,7 @@ app.post("/delete/tasks/:id", (req, res) => {
   const tasks = Task.deleteOne({ _id: id }, (err) => {
     if (err) console.log(err);
   });
+  res.send('Task deleted')
 });
 
 app.post("/add/tasks/:title/:important/:userID", (req, res) => {
@@ -53,7 +54,7 @@ app.post("/add/tasks/:title/:important/:userID", (req, res) => {
   });
   console.log(req.params);
   tasks.save((err) => console.log(err));
-  res.redirect("back");
+  res.send('Task added')
 });
 
 app.listen(port, () => {
