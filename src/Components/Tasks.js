@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import "./Tasks.css";
 const Tasks = ({ tasks, handleDelete, isLoading, setIsLoading }) => {
   const [arrayCreated, setArrayCreated] = useState(false);
@@ -8,7 +7,7 @@ const Tasks = ({ tasks, handleDelete, isLoading, setIsLoading }) => {
     if (isLoading) setIsLoading(false);
     if (!arrayCreated) setArrayCreated(true);
     const style = task.userData.important
-      ? { 
+      ? {
           border: "2px solid red",
         }
       : {};
@@ -33,13 +32,7 @@ const Tasks = ({ tasks, handleDelete, isLoading, setIsLoading }) => {
   return (
     <div className="taskList">
       <h2>Aktualne zadania</h2>
-      {!isLoading && arrayCreated ? (
-        <ul> {createTask} </ul>
-      ) : (
-        <CircularProgress
-          style={{ marginRight: "auto", marginLeft: "auto", marginTop: "10px" }}
-        />
-      )}
+      <ul> {createTask} </ul>
     </div>
   );
 };

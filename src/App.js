@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import anime from "animejs/lib/anime.es.js";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function App() {
   const ApiURL = "https://testing-project9034.herokuapp.com";
@@ -15,6 +16,7 @@ function App() {
   const [currentTask, setCurrentTask] = useState("");
   const [importantChecked, setImportantChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState();
 
   if (!localStorage.getItem("userID")) {
     localStorage.setItem("userID", Math.floor(Math.random() * 1000000000));
@@ -26,6 +28,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setTasks(data);
+        setData(data);
         if (data.length === 0) {
           setIsLoading(false);
           console.log(isLoading);
@@ -85,7 +88,7 @@ function App() {
             <TextField
               id="standard-basic"
               label="Insert your task"
-              autoComplete='off'
+              autoComplete="off"
               style={{ color: "white !important" }}
               value={currentTask}
               onChange={(e) => setCurrentTask(e.target.value)}
@@ -121,12 +124,22 @@ function App() {
           </form>
         </div>
 
-        <Tasks
-          tasks={tasks}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          handleDelete={handleDeleteTask}
-        />
+        {data ? (
+          <Tasks
+            tasks={tasks}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            handleDelete={handleDeleteTask}
+          />
+        ) : (
+          <CircularProgress
+            style={{
+              marginRight: "auto",
+              marginLeft: "auto",
+              marginTop: "10px",
+            }}
+          />
+        )}
       </div>
     </>
   );
